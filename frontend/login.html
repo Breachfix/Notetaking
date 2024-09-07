@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Notekeeper</title>
+  <link rel="stylesheet" href="./src/css/style.css">
+</head>
+<body>
+  <main class="mainLoginSingup">
+    <div class="auth-form">
+      <h2 class="title text-title-medium">Login</h2>
+      <form id="loginForm">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="signup.html">Signup</a></p>
+      <!-- Add "Use Notes Without Sign In" Button -->
+      <div class="guest-access">
+        <button id="guestAccessBtn" class="btn-guest">Use Notes Without Sign In</button>
+      </div>
+    </div>
+  </main>
+  <script src="./src/js/auth.js"></script>
+  <script>
+    // Add event listener for the "Use Notes Without Sign In" button
+    document.getElementById('guestAccessBtn').addEventListener('click', function () {
+      // Redirect to index.html
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
