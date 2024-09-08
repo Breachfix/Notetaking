@@ -3,7 +3,6 @@ import User from '../models/user.model.js';
 import Notebook from '../models/notebooks.model.js'; // Assuming you have a Notebook model
 import bcryptjs from 'bcryptjs';
 import crypto from 'crypto';
-import sendgrid from '@sendgrid/mail';
 import { generateTokenAndSetCookie } from '../utils/generateToken.js';
 import mongoose from 'mongoose';
 const DEFAULT_NOTEBOOK_ID = '64f8ca5ff1bdfb6a4c8b4567';

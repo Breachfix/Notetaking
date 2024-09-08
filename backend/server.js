@@ -11,6 +11,8 @@ import { connectDB } from './config/db.js';
 import './config/passport.js'; // Import your passport configuration
 import nodemailer from 'nodemailer';
 
+
+
 // Import necessary modules
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -33,11 +35,19 @@ app.set('views', './backend/views');
 
 // Connect to MongoDB database
 
-app.use(cors({
-    origin: ['http://127.0.0.1:5500','http://127.0.0.1:5501','http://127.0.0.1:5503'],// Replace with your frontend's URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-  }));
+
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // Allow requests with no origin (like mobile apps or curl requests)
+    return callback(null, true);  // Allow all origins
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,  // Allows cookies and credentials to be passed
+};
+
+app.use(cors(corsOptions));
+
 
 app.use(express.json());
 app.use(cookieParser()); 

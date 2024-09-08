@@ -1,7 +1,11 @@
+
+---
+
 # Notes & Notebooks API + Frontend
 
 ## Table of Contents
 - [Overview](#overview)
+- [Important Notes for Running Locally](#important-notes-for-running-locally)
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
 - [Database Configuration](#database-configuration)
@@ -23,7 +27,70 @@
 
 ## Overview
 
-The **Notes & Notebooks API** combined with a **Frontend** application provides a complete solution for managing notebooks and notes. The backend is powered by **MongoDB**, **Node.js**, and **JWT** for authentication. The frontend is designed for a smooth, interactive user experience using modern web development techniques.
+The **Notes & Notebooks API** combined with a **Frontend** application provides a complete solution for managing notebooks and notes. The backend uses **MongoDB**, **Node.js**, and **JWT** for authentication. The frontend delivers a modern and interactive user experience.
+
+---
+
+## Important Notes for Running Locally
+
+To run the project locally, follow these important steps:
+
+### 1. Create a `.env` File
+
+The project relies on environment variables, so you need to create a `.env` file in the root directory. This file is not included in the repository for security reasons. Here’s the content you should add to the `.env` file:
+
+```plaintext
+PORT=4000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+NODE_ENV=development
+SESSION_SECRET=your_session_secret
+API_BASE_URL=http://localhost:4000/api/v1
+```
+
+Make sure to replace `your_mongodb_connection_string`, `your_jwt_secret`, and `your_session_secret` with the actual values you want to use.
+
+### 2. Install Required Dependencies
+
+Next, you need to install the necessary dependencies. Run the following commands in your terminal:
+
+```bash
+npm install
+npm install -g live-server
+npm install @sendgrid/mail
+```
+
+These commands will install all the required modules for running the project locally.
+
+### 3. Port Configuration and Frontend-Backend Integration
+
+#### Check and Update the Port Number
+
+The backend is configured to run on port `4000` by default. If you need to change this (for example, if another service is using port `4000`), you can update the port number in the `.env` file. Then, restart the server using:
+
+```bash
+npm run dev
+```
+
+#### Updating Frontend API Base URLs
+
+If you change the port number in the `.env` file, you also need to update the frontend to use the correct API URL. Specifically, change the `API_BASE` variable in the `auth.js` and `dashboard.js` files. It should look something like this:
+
+```js
+const API_BASE = 'http://localhost:YOUR_NEW_PORT/api/v1';
+```
+
+Make sure to replace `YOUR_NEW_PORT` with the port you’ve set in the `.env` file.
+
+#### Ensure Consistency in the `.env` File
+
+Make sure the `API_BASE_URL` in your `.env` file matches the port number you’ve set. For example:
+
+```plaintext
+API_BASE_URL=http://localhost:4000/api/v1
+```
+
+If you change the port to something else, update this value to match.
 
 ---
 
@@ -36,22 +103,37 @@ The **Notes & Notebooks API** combined with a **Frontend** application provides 
    ```
 
 2. **Install dependencies**:
+   Run the following commands to install all required dependencies:
+
    ```bash
    npm install
+   npm install -g live-server
+   npm install @sendgrid/mail
    ```
 
-3. **Start the server**:
+3. **Start the backend server**:
+   To run the backend, use the command:
+
    ```bash
    npm run dev
    ```
 
-   The backend will run on `http://localhost:4000` and the frontend can be accessed using **Live Server** or your preferred local server.
+   This will start the backend server on `http://localhost:4000`.
+
+4. **Start the frontend**:
+   To run the frontend, use:
+
+   ```bash
+   npm run start
+   ```
+
+   This will launch the frontend using **Live Server** or another local server of your choice.
 
 ---
 
 ## ⚙️ Environment Variables
 
-Create a `.env` file at the root directory with the following environment variables:
+The application relies on a number of environment variables. You’ll need to create a `.env` file in the root directory with the following values:
 
 ```plaintext
 PORT=5000
@@ -66,13 +148,13 @@ NODE_ENV=development
 
 ## 🗄️ Database Configuration
 
-The API uses **MongoDB**. You can either run MongoDB locally or use **MongoDB Atlas**. Set up your `MONGO_URI` in the `.env` file accordingly.
+This API uses **MongoDB** for data storage. You can either set up **MongoDB** locally or use a hosted service like **MongoDB Atlas**. Ensure that you configure the `MONGO_URI` value in the `.env` file correctly.
 
 ---
 
 ## 🔒 Authentication
 
-The API uses **JWT** for token-based authentication and **Passport.js** for session management. Users must authenticate to access the API and manage notebooks and notes.
+The project uses **JWT** for authentication and **Passport.js** for session management. Users need to authenticate (sign up or log in) to use the API for managing notes and notebooks.
 
 ---
 
@@ -83,8 +165,8 @@ The API uses **JWT** for token-based authentication and **Passport.js** for sess
 | Method | Route                             | Description                                |
 |--------|------------------------------------|--------------------------------------------|
 | `POST` | `/api/v1/auth/signup`              | Register a new user.                       |
-| `POST` | `/api/v1/auth/login`               | Login and receive a token.                 |
-| `POST` | `/api/v1/auth/logout`              | Logout the user.                           |
+| `POST` | `/api/v1/auth/login`               | Log in and receive a token.                |
+| `POST` | `/api/v1/auth/logout`              | Log out the user.                          |
 | `POST` | `/api/v1/auth/forgot-password`     | Request a password reset link.             |
 | `PUT`  | `/api/v1/auth/reset-password/:token` | Reset a password using a token.           |
 | `POST` | `/api/v1/auth/verify-token`        | Verify the validity of a token.            |
@@ -113,22 +195,24 @@ The API uses **JWT** for token-based authentication and **Passport.js** for sess
 
 ## 📓 Frontend - Note Taking App
 
-The frontend provides a clean and interactive interface for managing notebooks and notes. It leverages modern JavaScript for dynamic and responsive behavior.
+The frontend provides a clean, modern interface for managing notebooks and notes. It’s built with dynamic JavaScript and uses a responsive design.
 
 ---
 
 ### 🗂️ Project Structure
+
+Here’s how the project is structured:
 
 ```bash
 ├── css/                    # Stylesheets
 ├── js/                     # JavaScript files
 │   ├── components/         # UI components (Tooltip, Modal, etc.)
 │   ├── guests/             # Guest mode utilities (client, database, modal, etc.)
-│   ├── utils.js            # Utility functions (e.g., event listeners, formatting)
+│   ├── utils.js            # Utility functions
 │   ├── client.js           # Client-side interactions for notes and notebooks
 │   ├── db.js               # Guest mode database functions
 │   ├── main.js             # Main logic
-│   └── app.js              # App initialization and event listeners
+│   └── app.js              # App initialization
 ├── index.html              # Landing page
 ├── dashboard.html          # Dashboard view
 └── readme.md               # This file
@@ -144,24 +228,19 @@ The frontend provides a clean and interactive interface for managing notebooks a
 
 2. **Note Management**:
    - Create, edit, and delete notes.
-   - Modal popup for note creation and editing.
+   - Use modals for creating and editing notes.
 
 3. **Dynamic Greeting & Time**:
-   - Displays greeting messages based on the time of day.
-   - Converts timestamps into a human-readable format (e.g., "5 minutes ago").
+   - Display greeting messages based on the time of day.
+   - Convert timestamps into a human-readable format, e.g., "5 minutes ago."
 
 ---
 
 ## 🎨 UI Components
 
-### **NavItem** - For Notebook Navigation
-- Displays notebooks in the sidebar with edit and delete options.
-
-### **Card** - For Notes
-- Displays notes as cards with title, content, and relative time.
-
-### **Modal** - For Note Creation/Editing
-- Provides a modal for adding or editing notes with validation.
+- **NavItem**: Displays notebooks in the sidebar with edit and delete options.
+- **Card**: Displays notes as cards with a title, content, and relative time.
+- **Modal**: Modal popups for adding or editing notes with validation.
 
 ---
 
@@ -173,6 +252,8 @@ The frontend provides a clean and interactive interface for managing notebooks a
    ```bash
    POST /api/v1/auth/signup
    Content-Type: application/json
+
+
 
    {
      "username": "johnDoe",
@@ -223,32 +304,24 @@ This project is licensed under the **MIT License**.
 
 ## 🛠️ Required Dependencies
 
-Make sure you have the following installed to run the project:
+Here are the dependencies you need for the project:
 
 ```json
 {
   "name": "notetaking",
   "version": "1.0.0",
-  "description": "",
-  "main": "backend/server.js",
   "scripts": {
     "dev": "nodemon backend/server.js",
     "start": "live-server frontend/",
     "run": "node backend/models/updateNotes.js"
   },
-  "keywords": [],
-  "author": "",
-  "type": "module",
-  "license": "ISC",
   "dependencies": {
     "axios": "^1.7.5",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0",
     "mongoose": "^8.6.1",
@@ -265,3 +338,5 @@ Make sure you have the following installed to run the project:
 ---
 
 🌟 **Happy Coding!** 🌟
+
+---

@@ -27,11 +27,12 @@ export const findNoteIndex = (notebook, noteId) => {
 
 // Initialize the database
 let notekeeperDB = {};
+const API_BASE = 'http://localhost:4000/api/v1';
 
 // Initialize database from server
 const initDB = async function () {
   try {
-    const response = await fetch('http://localhost:4000/api/v1/notebooks', {
+    const response = await fetch( `${API_BASE}/notebooks` , {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -57,7 +58,7 @@ export const db = {
   get: {
     // Fetch notebooks
     notebook() {
-      return fetch('http://localhost:4000/api/v1/notebooks', {
+      return fetch(`${API_BASE}/notebooks`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -73,7 +74,7 @@ export const db = {
     },
     // Fetch notes in a notebook
     note(notebookId) {
-      return fetch(`http://localhost:4000/api/v1/notebooks/${notebookId}/notes`, {
+      return fetch(`${API_BASE}/notebooks/${notebookId}/notes`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -91,7 +92,7 @@ export const db = {
   post: {
     // Create a new notebook
     notebook(name) {
-      return fetch('http://localhost:4000/api/v1/notebooks', {
+      return fetch(`${API_BASE}/notebooks`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -108,7 +109,7 @@ export const db = {
     },
     // Create a new note in a notebook
     note(notebookId, object) {
-      return fetch(`http://localhost:4000/api/v1/notebooks/${notebookId}/notes`, {
+      return fetch(`${API_BASE}/notebooks/${notebookId}/notes`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -127,7 +128,7 @@ export const db = {
   put: {
     // Update a note in a notebook
     note(notebookId, noteId, updatedNoteData) {
-      return fetch(`http://localhost:4000/api/v1/notebooks/${notebookId}/notes/${noteId}`, {
+      return fetch(`${API_BASE}/notebooks/${notebookId}/notes/${noteId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -146,7 +147,7 @@ export const db = {
   getSingle: {
     // Fetch a single note by its ID
     note(notebookId, noteId) {
-      return fetch(`http://localhost:4000/api/v1/notebooks/${notebookId}/notes/${noteId}`, {
+      return fetch(`${API_BASE}/notebooks/${notebookId}/notes/${noteId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
@@ -164,7 +165,7 @@ export const db = {
   delete: {
     // Delete a note by its ID
     note(notebookId, noteId) {
-      return fetch(`http://localhost:4000/api/v1/notebooks/${notebookId}/notes/${noteId}`, {
+      return fetch(`${API_BASE}/notebooks/${notebookId}/notes/${noteId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`,
