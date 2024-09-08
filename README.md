@@ -74,7 +74,7 @@ npm run dev
 
 #### Updating Frontend API Base URLs
 
-If you change the port number in the `.env` file, you also need to update the frontend to use the correct API URL. Specifically, change the `API_BASE` variable in the `auth.js` and `dashboard.js` files. It should look something like this:
+If you change the port number in the `.env` file, you also need to update the frontend to use the correct API URL. Specifically, change the `API_BASE` variable in the `auth.js`, `db.js` and `dashboard.js` files. It should look something like this:
 
 ```js
 const API_BASE = 'http://localhost:YOUR_NEW_PORT/api/v1';
@@ -98,8 +98,7 @@ If you change the port to something else, update this value to match.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-repo-url.git
-   cd your-repo
+   git clone https://github.com/Breachfix/Notetaking.git
    ```
 
 2. **Install dependencies**:
