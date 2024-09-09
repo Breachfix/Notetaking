@@ -14,6 +14,7 @@
   - [Auth Routes](#auth-routes)
   - [Note Routes](#note-routes)
   - [Notebook Routes](#notebook-routes)
+  - [Password Reset Routes](#password-reset-routes)
 - [Frontend](#frontend)
   - [Project Structure](#project-structure)
   - [Core Functionalities](#core-functionalities)
@@ -190,6 +191,13 @@ The project uses **JWT** for authentication and **Passport.js** for session mana
 | `DELETE`| `/api/v1/notebooks/:notebookId`        | Delete a notebook and its associated notes.   |
 | `GET`  | `/api/v1/notebooks/:notebookId/notes`   | Get all notes within a specific notebook.     |
 
+### 🔑 Password Reset Routes
+
+| Method | Route                         | Description                              |
+|--------|-------------------------------|------------------------------------------|
+| `POST` | `/api/v1/auth/forgot-password` | Send OTP for password reset via email.   |
+| `POST` | `/api/v1/auth/verify-otp`      | Verify the OTP code for password reset.  |
+| `PUT`  | `/api/v1/auth/reset-password`  | Reset password after OTP verification.   |
 ---
 
 ## 📓 Frontend - Note Taking App
@@ -207,6 +215,10 @@ Here’s how the project is structured:
 ├── js/                     # JavaScript files
 │   ├── components/         # UI components (Tooltip, Modal, etc.)
 │   ├── guests/             # Guest mode utilities (client, database, modal, etc.)
+|   ├── PasswordReset/
+│   │   ├── otp.js
+│   │   ├── reset.js
+│   │   └── recovered.js
 │   ├── utils.js            # Utility functions
 │   ├── client.js           # Client-side interactions for notes and notebooks
 │   ├── db.js               # Guest mode database functions
@@ -286,6 +298,41 @@ Here’s how the project is structured:
      "notebookId": "<notebookId>"
    }
    ```
+--- 
+
+### 🔑 Password Reset Examples
+
+#### Forgot Password:
+```js
+POST /api/v1/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com"
+} 
+```
+
+#### Verify OTP:
+```js
+POST /api/v1/auth/verify-otp
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "otp": "123456"
+}
+```
+
+#### Reset Password:
+```js
+PUT /api/v1/auth/reset-password
+Content-Type: application/json
+
+{
+  
+  "newPassword": "newPassword123"
+}
+```
 
 ---
 
@@ -298,41 +345,6 @@ Developed with ❤️ by **Jack Ntihaniraho**. Feel free to explore, contribute,
 ## License
 
 This project is licensed under the **MIT License**.
-
----
-
-## 🛠️ Required Dependencies
-
-Here are the dependencies you need for the project:
-
-```json
-{
-  "name": "notetaking",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "nodemon backend/server.js",
-    "start": "live-server frontend/",
-    "run": "node backend/models/updateNotes.js"
-  },
-  "dependencies": {
-    "axios": "^1.7.5",
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.8.0",
-    "mongoose": "^8.6.1",
-    "nodemailer": "^6.9.15",
-    "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.4"
-  }
-}
-```
 
 ---
 
