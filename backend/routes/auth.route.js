@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { signupAPI,  resetPassword, logout, verifyToken,sendOTP } from '../controllers/auth.controller.js';
+import { signupAPI,  resetPassword, logout, verifyToken,sendOTP, verifyOTP } from '../controllers/auth.controller.js';
 import { generateTokenAndSetCookie } from '../utils/generateToken.js'; // Import the token generator function
 
 const router = express.Router();
@@ -48,6 +48,7 @@ router.post('/verify-token', verifyToken);
 
 // OTP route
 router.post('/send_otp', sendOTP);
+router.post('/verify-otp', verifyOTP);  
 
 // Reset password route
 router.post('/reset_password', resetPassword);

@@ -115,38 +115,7 @@ export async function signupAPI(req, res) {
 }
 
 
-// Login for API
-// export async function loginAPI(req, res) {
-//     try {
-//         const { email, password } = req.body;
-//         if (!email || !password) {
-//             return res.status(400).json({ success: false, message: "Please provide all required fields" });
-//         }
 
-//         const user = await User.findOne({ email });
-//         if (!user) {
-//             return res.status(404).json({ success: false, message: "Incorrect email" });
-//         }
-
-//         const isPasswordCorrect = await bcryptjs.compare(password, user.password);
-//         if (!isPasswordCorrect) {
-//             return res.status(401).json({ success: false, message: "Incorrect password" });
-//         }
-
-//         generateTokenAndSetCookie(user._id, res);
-//         res.status(200).json({
-//             success: true,
-//             user: {
-//                 username: user.username,
-//                 email: user.email
-//             },
-//             token 
-//         });
-//     } catch (error) {
-//         console.error("An error occurred in Login Controller", error.message, error);
-//         res.status(500).json({ success: false, message: error.message });
-//     }
-// }
 export async function loginAPI(req, res) {
     try {
         const { email, password } = req.body;
@@ -194,55 +163,93 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 
 // Route to send OTP email
 export async function sendOTP(req, res) {
-  const { recipient_email } = req.body;
-  try {
-    const user = await User.findOne({ email: recipient_email });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    const { recipient_email } = req.body;
+    try {
+      const user = await User.findOne({ email: recipient_email });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const OTP = generateOTP();
+      const otpExpires = Date.now() + 5 * 60 * 1000; // Expires in 5 minutes
+  
+      // Save OTP and expiry time in the user's database
+      user.otp = OTP;
+      user.otpExpires = otpExpires;
+      await user.save();
+
+      console.log(`OTP generated for user ${user.email}: ${OTP}`);  // Debugging info
+
+  
+      // Send email
+      await sendEmail({ recipient_email, OTP });
+      
+      res.json({ message: 'OTP sent to your email' });
+    } catch (error) {
+      console.error('Error sending OTP:', error);  // Log the exact error for debugging
+      res.status(500).json({ message: 'Error sending OTP', error: error.message });
     }
-
-    const OTP = generateOTP();
-    const otpExpires = Date.now() + 5 * 60 * 1000; // Expires in 5 minutes
-
-    // Save OTP and expiry time in the user's database
-    user.otp = OTP;
-    user.otpExpires = otpExpires;
-    await user.save();
-
-    // Send email
-    await sendEmail({ recipient_email, OTP });
-
-    res.json({ message: 'OTP sent to your email' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error sending OTP' });
   }
-}
 
+export async function verifyOTP(req, res) {
+    const { otp, email } = req.body;
+  
+    try {
+      const user = await User.findOne({ email, otp, otpExpires: { $gt: Date.now() } });
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid or expired OTP' });
+      }
+  
+      // Clear the OTP once verified
+      user.otp = null;
+      user.otpExpires = null;
+      await user.save();
+  
+      // Generate a temporary token that expires in 10 minutes
+      const tempToken = jwt.sign({ email: user.email }, ENV_VARS.JWT_SECRET, { expiresIn: '10m' });
+  
+      res.json({ message: 'OTP verified successfully', tempToken });
+    } catch (error) {
+      console.error('Error during OTP verification:', error);
+      res.status(500).json({ message: 'Error during OTP verification' });
+    }
+  }  
+  
 // Route to reset password
 export async function resetPassword(req, res) {
-  const { otp, newPassword } = req.body;
+  const { tempToken, newPassword } = req.body;
 
   try {
-    const user = await User.findOne({ otp, otpExpires: { $gt: Date.now() } });
+    // Verify the temporary token
+    const decoded = jwt.verify(tempToken, ENV_VARS.JWT_SECRET);
+    const email = decoded.email;
+
+    // Find the user by email
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid or expired OTP' });
+      return res.status(400).json({ message: 'Invalid token' });
     }
 
     // Hash the new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(newPassword, salt);
 
-    // Save the new password
+    console.log('Hashed password:', hashedPassword);
+
+    // Update the user's password
     user.password = hashedPassword;
-    user.otp = null;  // Clear the OTP
-    user.otpExpires = null;
     await user.save();
 
+    console.log('Password reset successful for user:', user.email);
     res.json({ message: 'Password reset successfully' });
   } catch (error) {
+    console.error('Error resetting password:', error);  // Log the exact error
     res.status(500).json({ message: 'Error resetting password' });
   }
 }
+
+  
+  
 
 
 
@@ -284,92 +291,3 @@ export function verifyToken(req, res) {
 
 
 
-//  export async function signup(req, res) {
-//   try {
-//     const { username, password, email } = req.body;
-//     if (!email || !password || !username) {
-//       return res.status(400).json({ success: false, message: "Please provide all required fields" });
-//     }
-
-//     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-//     if (!emailRegex.test(email)) {
-//       return res.status(400).json({ success: false, message: "Please provide a valid email" });
-//     }
-
-//     if (password.length < 7) {
-//       return res.status(400).json({ success: false, message: "Password must be at least 7 characters long" });
-//     }
-
-//     const existingUserByEmail = await User.findOne({ email });
-//     if (existingUserByEmail) {
-//       return res.status(400).json({ success: false, message: "Email already exists" });
-//     }
-
-//     const existingUserByUsername = await User.findOne({ username });
-//     if (existingUserByUsername) {
-//       return res.status(400).json({ success: false, message: "Username already exists" });
-//     }
-
-//     const salt = await bcryptjs.genSalt(10)
-//     const hashedPassword = await bcryptjs.hash(password, salt);
-
-//     const PROFILE_PICS = ["/avatar1.png", "/avatar2.png", "/avatar3.png", "/avatar4.png"];
-//     const image = PROFILE_PICS[Math.floor(Math.random() * PROFILE_PICS.length)];
-
-//     const newUser = new User({
-//       username,
-//       email,
-//       password: hashedPassword,
-//       image
-//     });
-
-//     if(newUser){
-//         generateTokenAndSetCookie(newUser._id, res);
-//         await newUser.save();
-//         res.status(201).json({ success: true, user:{
-//             ...newUser._doc,
-//             password: ""
-//            },
-//          message: "User created successfully" });
-//     }
-
-    
-
-   
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// }
-// // Other functions (login, forgotPassword, logout) can remain the same
-// export async function login(req, res) {
-//     try {
-//         const{email, password} = req.body;
-//         if(!email ||!password){
-//             return res.status(400).json({ success: false, message: "Please provide all required fields" });
-//         }
-
-//         const user = await User.findOne({email});
-//         if(!user){
-//            // return res.status(401).json({ success: false, message: "User not found" });
-//             return res.status(404).json({ success: false, message: "Incorrect email" });
-//         }
-
-//         const isPasswordCorrect = await bcryptjs.compare(password, user.password);
-//         if(!isPasswordCorrect){
-//             return res.status(401).json({ success: false, message: "Incorrect password" });
-//         }
-
-//         generateTokenAndSetCookie(user._id, res);
-//         res.status(200).json({ 
-//             success:true,
-//             user: {
-//             ...user._doc,
-//             password: ""
-//             }  // Don't send password in the response
-//         })
-//     } catch (error) {
-//         console.error("An error occurred in Login Controller", error.message, error);
-//         res.status(500).json({ success: false, message: error.message });
-        
-//     }
-// }

@@ -1053,6 +1053,178 @@ body {
   background-color: var(--background);
 }
 
+/*-----------------------------------*\
+  OTP Form Styles
+\*-----------------------------------*/
+/* OTP Form */
+.otp-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--spacing-4);
+  background-color: var(--surface-container-low);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-3);
+}
+
+.otp-container h2 {
+  margin-bottom: var(--spacing-4);
+  text-align: center;
+}
+
+.otp-container input {
+  width: 100%;
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+  border-radius: var(--radius-small);
+  background-color: var(--surface);
+  color: var(--on-surface);
+  border: 1px solid var(--outline);
+  transition: border-color var(--tr-duration-short) var(--tr-easing-linear);
+}
+
+.otp-container input:focus {
+  border-color: var(--primary);
+}
+
+.otp-container button {
+  width: 100%;
+  padding: var(--spacing-3);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border-radius: var(--radius-small);
+  font-size: var(--fs-body-large);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background-color var(--tr-duration-short) var(--tr-easing-linear);
+}
+
+.otp-container button:hover {
+  background-color: var(--primary-dark);
+}
+.mainOPT {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/*-----------------------------------*\
+  Recovered Form Styles
+\*-----------------------------------*/
+/* Recovered Form */
+.auth-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--spacing-4);
+  background-color: var(--surface-container-low);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-3);
+}
+
+.auth-form h2 {
+  margin-bottom: var(--spacing-4);
+  text-align: center;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+  border-radius: var(--radius-small);
+  background-color: var(--surface);
+  color: var(--on-surface);
+  border: 1px solid var(--outline);
+  transition: border-color var(--tr-duration-short) var(--tr-easing-linear);
+}
+
+.auth-form input:focus {
+  border-color: var(--primary);
+}
+
+.auth-form button {
+  width: 100%;
+  padding: var(--spacing-3);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border-radius: var(--radius-small);
+  font-size: var(--fs-body-large);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background-color var(--tr-duration-short) var (--tr-easing-linear);
+}
+
+.auth-form button:hover {
+  background-color: var(--primary-dark);
+}
+
+.mainRecovered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/*-----------------------------------*\
+ Reset Password Form Styles
+\*-----------------------------------*/
+/* Reset Password Form */
+.reset-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--spacing-4);
+  background-color: var(--surface-container-low);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-3);
+}
+
+.reset-container h2 {
+  margin-bottom: var(--spacing-4);
+  text-align: center;
+}
+
+.reset-container input {
+  width: 100%;
+  padding: var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+  border-radius: var(--radius-small);
+  background-color: var(--surface);
+  color: var(--on-surface);
+  border: 1px solid var(--outline);
+  transition: border-color var(--tr-duration-short) var(--tr-easing-linear);
+}
+
+.reset-container input:focus {
+  border-color: var(--primary);
+}
+
+.reset-container button {
+  width: 100%;
+  padding: var(--spacing-3);
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border-radius: var(--radius-small);
+  font-size: var(--fs-body-large);
+  font-weight: var (--fw-medium);
+  cursor: pointer;
+  transition: background-color var(--tr-duration-short) var (--tr-easing-linear);
+}
+
+.reset-container button:hover {
+  background-color: var(--primary-dark);
+}
+
+.mainReset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+
+
 .note-item {
   border: 1px solid #ddd;
   padding: 10px;

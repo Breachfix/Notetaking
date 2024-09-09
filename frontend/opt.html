@@ -1,84 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Request OPT</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #00466a;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #003355;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter OTP</title>
+    <link rel="stylesheet" href="./src/css/style.css">
 </head>
 <body>
-
-  <div class="container">
-    <h2>Request OTP</h2>
-    <form id="otpRequestForm">
-      <label for="email">Enter your email to receive OTP:</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required>
-      <button type="submit">Send OTP</button>
-    </form>
-    <p id="responseMessage"></p>
-  </div>
-
-  <script>
-    document.getElementById('otpRequestForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-
-      try {
-        const response = await fetch('/send_recovery_email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ recipient_email: email })
-        });
-
-        const data = await response.text();
-        document.getElementById('responseMessage').innerText = data;
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('responseMessage').innerText = 'Failed to send OTP.';
-      }
-    });
-  </script>
-
+    <main class="mainOPT">
+        <div class="otp-container">
+            <h2>Enter OTP</h2>
+            <form id="otpForm">
+                <input type="text" id="otp" placeholder="Enter OTP" required>
+                <input type="email" id="email" placeholder="Enter Email" required>
+                <button type="submit">Verify OTP</button>
+            </form>
+        </div>
+    </main>
+    <script src="./src/js/Password reset/OTPIniput.js"></script>
 </body>
 </html>
