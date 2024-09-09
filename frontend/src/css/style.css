@@ -2,14 +2,6 @@
   #style.css
 \*-----------------------------------*/
 
-/**
- * copyright 2023 codewithsadee
- */
-
-
-
-
-
 /*-----------------------------------*\
   #CUSTOM PROPERTY
 \*-----------------------------------*/
@@ -980,9 +972,21 @@ body {
 
 
 /*-----------------------------------*\
-  #AUTH FORMS (Login and Signup)
+  #AUTH FORMS (Login and Sign up)
 \*-----------------------------------*/
-
+/* Adjust form container */
+.mainLoginSingup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--background);
+  padding: 0 15px; /* Add some padding to avoid issues with small screens */
+  box-sizing: border-box;
+  
+  
+}
 .auth-form {
   max-width: 400px;
   margin: 0 auto;
@@ -1044,14 +1048,7 @@ body {
   color: var(--primary-dark);
 }
 
-/* Adjust form container */
-.mainLoginSingup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: var(--background);
-}
+
 
 /*-----------------------------------*\
   OTP Form Styles

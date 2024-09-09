@@ -1,0 +1,238 @@
+/*-----------------------------------*\
+  #CUSTOM PROPERTY
+\*-----------------------------------*/
+
+:root {
+    --black: #000000;
+  
+    /* Light theme */
+    --background-light: #FFFBFF;
+    --on-background-light: #201A18;
+    --surface-light: #FFF8F6;
+    --surface-container-low-light: #FEF1EC;
+    --on-surface-light: #201A18;
+    --on-surface-variant-light: #52443D;
+    --primary-light: #9D4300;
+    --on-primary-light: #FFFFFF;
+  
+    /* Dark theme */
+    --background-dark: #201A18;
+    --on-background-dark: #EDE0DB;
+    --surface-dark: #181210;
+    --surface-container-low-dark: #201A18;
+    --on-surface-dark: #D0C4BF;
+    --on-surface-variant-dark: #D7C2B9;
+    --primary-dark: #FFB690;
+    --on-primary-dark: #552100;
+  
+    /* Spacing */
+    --spacing-4: 16px;
+  
+    /* Typography */
+    --fs-base: 62.5%;
+    --fs-body-large: 1.6rem;
+    --fw-medium: 500;
+  
+    /* Border radius */
+    --radius-large: 16px;
+    --radius-small: 8px;
+  
+    /* Transition */
+    --tr-duration-short: 200ms;
+    --tr-easing-linear: cubic-bezier(0, 0, 1, 1);
+  }
+  
+  /*-----------------------------------*\
+    Light Mode
+  \*-----------------------------------*/
+  [data-theme="light"] {
+    background-color: var(--background-light);
+    color: var(--on-background-light);
+  }
+  
+  [data-theme="light"] .auth-form {
+    background-color: var(--surface-light);
+  }
+  
+  [data-theme="light"] .auth-form input {
+    background-color: var(--surface-light);
+    color: var(--on-surface-light);
+    border: 1px solid var(--on-surface-variant-light);
+  }
+  
+  [data-theme="light"] .auth-form button {
+    background-color: var(--primary-light);
+    color: var(--on-primary-light);
+  }
+  
+  [data-theme="light"] .auth-form a {
+    color: var(--primary-light);
+  }
+  
+  /*-----------------------------------*\
+    Dark Mode
+  \*-----------------------------------*/
+  [data-theme="dark"] {
+    background-color: var(--background-dark);
+    color: var(--on-background-dark);
+  }
+  
+  [data-theme="dark"] .auth-form {
+    background-color: var(--surface-dark);
+  }
+  
+  [data-theme="dark"] .auth-form input {
+    background-color: var(--surface-dark);
+    color: var(--on-surface-dark);
+    border: 1px solid var(--on-surface-variant-dark);
+  }
+  
+  [data-theme="dark"] .auth-form button {
+    background-color: var(--primary-dark);
+    color: var(--on-primary-dark);
+  }
+  
+  [data-theme="dark"] .auth-form a {
+    color: var(--primary-dark);
+  }
+  
+  /*-----------------------------------*\
+    Form Reset and Box Styles
+  \*-----------------------------------*/
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Kumbh Sans', sans-serif;
+    font-size: var(--fs-body-medium);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /*-----------------------------------*\
+    Form Containers
+  \*-----------------------------------*/
+  .mainLoginSingup, .mainReset, .mainOPT, .mainRecovered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 15px; 
+    background-color: var(--background);
+  }
+  
+  .auth-form, .otp-container, .reset-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: var(--spacing-4);
+    background-color: var(--surface-container-low);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-3);
+    /* max-width: 400px;
+    width: 100%;
+    padding: var(--spacing-4);
+    background-color: var(--surface-container-low-dark);
+    border-radius: var(--radius-large);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease; */
+  }
+  
+  /* Styling for inputs and buttons */
+  .auth-form input, .otp-container input, .reset-container input {
+    width: 100%;
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+    border-radius: var(--radius-small);
+    border: 1px solid var(--on-surface-variant-dark);
+    transition: border-color var(--tr-duration-short) var(--tr-easing-linear);
+  }
+
+  .auth-form h2, .otp-container h2, .reset-container h2{
+    margin-bottom: var(--spacing-4);
+    text-align: center;
+  }
+  
+  .auth-form button, .otp-container button, .reset-container button {
+    width: 100%;
+    padding: var(--spacing-4);
+    background-color: var(--primary-dark);
+    color: var(--on-primary-dark);
+    border-radius: var(--radius-small);
+    font-size: var(--fs-body-large);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+    transition: background-color var(--tr-duration-short) var(--tr-easing-linear);
+  }
+  
+  .auth-form button:hover, .otp-container button:hover, .reset-container button:hover {
+    background-color: var(--primary-container-dark);
+    
+  }
+  
+  .auth-form p, .otp-container p, .reset-container p {
+    text-align: center;
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-5);
+  }
+  
+  .auth-form a, .otp-container a, .reset-container a {
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-5);
+    color: var(--primary-dark);
+    font-weight: var(--fw-medium);
+    transition: color var(--tr-duration-short) var(--tr-easing-linear);
+    
+  }
+  
+  .auth-form a:hover, .otp-container a:hover, .reset-container a:hover {
+    color: var(--primary-light);
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-5);
+  }
+  
+  /*-----------------------------------*\
+    Typography Styles
+  \*-----------------------------------*/
+  .text-display-large {
+    font-size: 3.6rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-4);
+  }
+  
+  .text-body-large {
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
+  
+  .text-body-medium {
+    font-size: 1.4rem;
+    line-height: 1.5;
+  }
+  
+  /*-----------------------------------*\
+    Responsive Media Queries
+  \*-----------------------------------*/
+  @media (min-width: 768px) {
+    .main {
+      padding-inline: var(--spacing-6);
+    }
+  }
+  
+  @media (min-width: 1400px) {
+    .main {
+      max-width: 1480px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+  
