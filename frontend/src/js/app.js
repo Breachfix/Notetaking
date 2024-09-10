@@ -2,7 +2,7 @@ import { addEventOnElements, getGreetingMsg, activeNotebook, makeElemEditable } 
 import { Tooltip } from "../js/guests/guestTooltips.js";
 import { guestDB } from "../js/guests/guestDB.js"; // Ensure guestDB is used
 import { client } from "../js/guests/guestClient.js";
-import { NoteModal } from "../js/guests/guestModal.js";
+import {DeleteConfirmModal, NoteModal } from "../js/guests/guestModal.js";
 
 // Sidebar toggle
 const $sidebar = document.querySelector('[data-sidebar]');
@@ -24,7 +24,7 @@ $overlay.addEventListener('click', toggleSidebar);
 
 // If token is found, redirect to dashboard and stop further execution
 if (token) {
-  window.location.href = '/frontend/dashboard.html'; // Assuming you have a dashboard.html
+  window.location.href = '/Frontend/dashboard.html'; // Assuming you have a dashboard.html
 } else {
   document.addEventListener('DOMContentLoaded', () => {
     // Tooltip initialization

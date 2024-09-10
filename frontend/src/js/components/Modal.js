@@ -17,9 +17,22 @@ const NoteModal = function (title = 'Untitled', content = 'Add your note...', cr
   const $modal = document.createElement('div');
   $modal.classList.add('modal');
 
-  // Get relative time if createdAt is provided
-  const time = createdAt ? getRelativeTime(new Date(createdAt).getTime()) : '';
-  
+// Check if createdAt is valid and only show time if it exists
+let time = '';
+if (createdAt) {
+  const date = new Date(createdAt);
+  if (!isNaN(date.getTime())) {
+    // Only calculate relative time if the date is valid
+    time = getRelativeTime(date.getTime());
+  } else {
+    console.error(`Invalid date passed for createdAt: ${createdAt}`);
+  }
+}
+
+// No need to log or handle the case where createdAt is not provided (i.e., for new notes)
+
+console.log(`Displaying time in modal: ${time}`); // Debugging the final time to display
+
 
   $modal.innerHTML = `
     <button class="icon-btn large" aria-label="Close modal" data-close-btn>
@@ -28,7 +41,9 @@ const NoteModal = function (title = 'Untitled', content = 'Add your note...', cr
     </button>
     <input type="text" placeholder="Untitled" value="${title}" class="modal-title text-title-medium" data-note-field>
     <textarea placeholder="Take a note..." class="modal-text text-body-large custom-scrollbar" data-note-field>${content}</textarea>
+
     <div class="modal-footer">
+      <span class="time text-label-large">${time}</span>
       <button class="btn text" data-submit-btn>
         <span class="text-label-large">Save</span>
         <div class="state-layer"></div>

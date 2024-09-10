@@ -38,6 +38,10 @@ export const Card = function (noteData, notebookId) {
     <p class="card-text text-body-large">${content}</p>
     <div class="wrapper">
       <span class="card-time text-label-large">${getRelativeTime(postedOn)}</span>
+      <button class="icon-btn large" aria-label="Share note" data-tooltip="Share note" data-share-btn>
+          <span class="material-symbols-rounded" aria-hidden="true">share</span>
+          <div class="state-layer"></div>
+        </button>
       <button class="icon-btn large" aria-label="Delete note" data-tooltip="Delete note" data-delete-btn>
         <span class="material-symbols-rounded" aria-hidden="true">delete</span>
         <div class="state-layer"></div>
@@ -50,7 +54,7 @@ export const Card = function (noteData, notebookId) {
 
   // Click handler for opening the modal and editing the note
   $card.addEventListener('click', function () {
-    const modal = NoteModal(title, content, getRelativeTime(createdAt));
+    const modal = NoteModal(title, content, createdAt);
     modal.open();
 
     // Attach the submit handler after the modal is opened
@@ -84,6 +88,23 @@ export const Card = function (noteData, notebookId) {
       modal.close();
     });
   });
+
+   // Add click handler for sharing the note
+ // Add click handler for sharing the note
+ const $shareBtn = $card.querySelector('[data-share-btn]');
+ $shareBtn.addEventListener('click', function (event) {
+   event.stopImmediatePropagation();
+
+   // Open a prompt for the user to enter the recipient's email
+   const recipientEmail = prompt("Enter the recipient's email:");
+
+   if (recipientEmail) {
+     shareNoteWithUser(id, recipientEmail);
+   }
+ });
+
+
+
 
   // Add click handler for deleting the note
   const $deleteBtn = $card.querySelector('[data-delete-btn]');
@@ -124,3 +145,27 @@ export const Card = function (noteData, notebookId) {
 
   return $card;
 };
+
+
+// Function to share the note
+async function shareNoteWithUser(noteId, email) {
+  try {
+    const response = await fetch(`/api/v1/notes/${noteId}/share`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt-token')}`, // Ensure authentication
+      },
+      body: JSON.stringify({ recipientEmail: email }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert(`Note shared successfully with ${email}`);
+    } else {
+      alert(`Error sharing note: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error sharing the note:', error);
+  }
+}

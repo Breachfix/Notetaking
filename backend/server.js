@@ -74,8 +74,8 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/notes", noteRoutes);
 app.use('/api/v1/notebooks', folderRoutes); 
 
-// Serve static files like CSS, JS, images from the frontend directory
-app.use(express.static(path.join(process.cwd(), 'frontend')));
+// // Serve static files like CSS, JS, images from the frontend directory
+// app.use(express.static(path.join(process.cwd(), 'frontend')));
 
 
 

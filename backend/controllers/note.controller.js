@@ -136,3 +136,65 @@ export const getNotebookByNoteTitle = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+export const shareNote = async (req, res) => {
+    const { noteId } = req.params;
+    const { recipientEmail } = req.body;
+  
+    try {
+      // Validate the input
+      if (!recipientEmail) {
+        return res.status(400).json({ message: 'Recipient email is required.' });
+      }
+  
+      // Find the recipient user by email
+      const recipientUser = await User.findOne({ email: recipientEmail });
+      if (!recipientUser) {
+        return res.status(404).json({ message: 'Recipient not found.' });
+      }
+  
+      // Find the note by ID
+      const note = await Note.findById(noteId);
+      if (!note) {
+        return res.status(404).json({ message: 'Note not found.' });
+      }
+  
+      // Check if the user is the owner of the note
+      if (note.user.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: 'You do not have permission to share this note.' });
+      }
+  
+      // Check if the note is already shared with the recipient
+      if (note.sharedWith.includes(recipientUser._id)) {
+        return res.status(400).json({ message: 'Note is already shared with this user.' });
+      }
+  
+      // Add the recipient's ID to the sharedWith array
+      note.sharedWith.push(recipientUser._id);
+      await note.save();
+  
+      res.status(200).json({ message: `Note shared successfully with ${recipientEmail}.` });
+    } catch (error) {
+      console.error('Error sharing note:', error);
+      res.status(500).json({ message: 'Server error.' });
+    }
+  };
+// Get notes shared with the authenticated user
+export const getSharedNotes = async (req, res) => {
+    try {
+        // Find notes where the authenticated user is in the sharedWith array
+        const sharedNotes = await Note.find({ sharedWith: req.user._id }).populate('user', 'email');
+
+        if (!sharedNotes || sharedNotes.length === 0) {
+            return res.status(404).json({ message: 'No shared notes found.' });
+        }
+
+        res.status(200).json({ sharedNotes });
+    } catch (error) {
+        console.error('Error fetching shared notes:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+};
+  
+  
+

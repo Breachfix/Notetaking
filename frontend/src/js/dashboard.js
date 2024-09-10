@@ -15,6 +15,7 @@ import { db, dbInitPromise } from './db.js';
 document.addEventListener('DOMContentLoaded', async function () {
   const API_BASE = 'http://localhost:4000/api/v1';
   const token = localStorage.getItem('jwt-token');
+  const DEFAULT_SHARED_NOTEBOOK_ID = 'shared';
 
   const sidebarList = document.querySelector('[data-sidebar-list]');
   const notePanel = document.querySelector('[data-note-panel]');
@@ -29,6 +30,13 @@ document.addEventListener('DOMContentLoaded', async function () {
   const logoutBtn = document.querySelector('[data-logout-btn]'); 
   const DEFAULT_NOTEBOOK_ID = '64f8ca5ff1bdfb6a4c8b4567'; 
   const allNotesBtn = document.querySelector('[data-all-notes-btn]');
+  const emptyNotesTemplate = `
+<div class="empty-notes">
+  <span class="material-symbols-rounded" aria-hidden="true">note_stack</span>
+
+  <div class="text-headline-small">No notes</div>
+</div>
+`;
 if (allNotesBtn) {
   allNotesBtn.addEventListener('click', () => {
     fetchAllNotes();
@@ -145,32 +153,64 @@ if (allNotesBtn) {
   
 // Function to render notes on the UI
 // Function to render notes on the UI
-function renderNotes(notes = [], isAllNotes = false) {
+// function renderNotes(notes = [], isAllNotes = false) {
+//   // Ensure notes is an array before proceeding
+//   if (!Array.isArray(notes)) {
+//     console.error('Error: Notes is not an array', notes);
+//     return;
+//   }
+
+//   notePanel.innerHTML = emptyNotesTemplate; // Clear the note panel before rendering
+
+//   if (notes.length > 0) {
+//     notes.forEach(note => {
+//       const noteItem = Card(note, isAllNotes ? null : note.notebookId); // If it's "All Notes," don't pass notebookId
+
+//       if (noteItem) {
+//         // Enable delete and edit for all notes, whether viewing "All Notes" or specific notebooks
+//         const deleteBtn = noteItem.querySelector('[data-delete-btn]');
+//         if (deleteBtn) {
+//           deleteBtn.addEventListener('click', () => deleteNoteById(note._id));
+//         }
+
+//         notePanel.appendChild(noteItem); // Append the note item to the note panel
+//       }
+//     });
+//   } else {
+//     notePanel.innerHTML = '<p>No notes available.</p>'; // Show a message if there are no notes
+//   }
+// }
+function renderNotes(notes = [], options = { isAllNotes: false, emptyMessage: 'No notes available', notebookId: null }) {
   // Ensure notes is an array before proceeding
   if (!Array.isArray(notes)) {
     console.error('Error: Notes is not an array', notes);
     return;
   }
 
-  notePanel.innerHTML = ''; // Clear the note panel before rendering
+  // Clear the note panel before rendering
+  notePanel.innerHTML = " "
 
-  if (notes.length > 0) {
-    notes.forEach(note => {
-      const noteItem = Card(note, isAllNotes ? null : note.notebookId); // If it's "All Notes," don't pass notebookId
-
-      if (noteItem) {
-        // Enable delete and edit for all notes, whether viewing "All Notes" or specific notebooks
-        const deleteBtn = noteItem.querySelector('[data-delete-btn]');
-        if (deleteBtn) {
-          deleteBtn.addEventListener('click', () => deleteNoteById(note._id));
-        }
-
-        notePanel.appendChild(noteItem); // Append the note item to the note panel
-      }
-    });
-  } else {
-    notePanel.innerHTML = '<p>No notes available.</p>'; // Show a message if there are no notes
+  // Check if there are no notes to render
+  if (notes.length === 0) {
+    // If there are no notes, show the empty message or template
+    notePanel.innerHTML = emptyNotesTemplate
+    return; // Exit early since there are no notes to render
   }
+
+  // If there are notes, render them
+  notes.forEach(note => {
+    const noteItem = Card(note, options.isAllNotes ? null : (note.notebookId || options.notebookId)); // Pass notebookId unless it's "All Notes"
+    
+    if (noteItem) {
+      const deleteBtn = noteItem.querySelector('[data-delete-btn]');
+      
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => deleteNoteById(note._id)); // Attach delete functionality
+      }
+      
+      notePanel.appendChild(noteItem); // Append the note item to the note panel
+    }
+  });
 }
 
 
@@ -481,6 +521,35 @@ async function createNoteInNotebook(notebookId, noteObj) {
     }
   }
 
+   // Function to share the note
+   async function fetchSharedNotes() {
+    try {
+      const response = await fetch(`${API_BASE}/notes/shared`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const data = await response.json();
+      if (response.ok && data.sharedNotes) {
+        console.log('Fetched shared notes:', data.sharedNotes);
+        notePanelTitle.textContent = 'Shared Notes';
+        renderNotes(data.sharedNotes, { emptyMessage: 'No shared notes found' });
+      } else {
+        console.error('Failed to fetch shared notes:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching shared notes:', error);
+    }
+  }
+  
+  
+
+
+  // Fetch shared notes when the page loads
+  fetchSharedNotes();
  
   
 

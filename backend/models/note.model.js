@@ -19,6 +19,12 @@ const noteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    sharedWith: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'  // Referencing the User model for shared users
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now

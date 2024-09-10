@@ -5,11 +5,17 @@ import {
   getNoteById, 
   updateNote, 
   deleteNote, 
-  getNotebookByNoteTitle // Import the function to get notebook by note title
+  getNotebookByNoteTitle, // Import the function to get notebook by note title
+  shareNote,
+  getSharedNotes 
 } from '../controllers/note.controller.js';
 import { protectForAPI } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
+
+
+// Route to get notes shared with the authenticated user
+router.get('/shared', protectForAPI, getSharedNotes); // Get shared notes for the authenticated user
 
 // Route to create a note and get all notes for the authenticated user
 router.route('/')
@@ -24,5 +30,12 @@ router.route('/:id')
 
 // Route to get notebook ID by note title
 router.get('/note/:noteTitle', protectForAPI, getNotebookByNoteTitle); // Get notebook ID by note title
+
+// Route to share a note with another authenticated user
+router.post('/share/:noteId', protectForAPI, shareNote); // Share a note by noteId
+
+
+
+
 
 export default router;
