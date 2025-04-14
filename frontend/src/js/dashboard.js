@@ -13,7 +13,7 @@ import { NoteModal } from "./components/Modal.js";
 import { db, dbInitPromise } from './db.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
-  const API_BASE = 'http://localhost:4000/api/v1';
+  const API_BASE = 'https://notetaking-xxgg.onrender.com/api/v1';
   const token = localStorage.getItem('jwt-token');
   const DEFAULT_SHARED_NOTEBOOK_ID = 'shared';
 

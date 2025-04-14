@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    const API_BASE = 'http://localhost:4000/api/v1';
+    const API_BASE = 'https://notetaking-xxgg.onrender.com/api/v1';
 
     // Handle Login Button (Redirect to login page)
     const loginButton = document.querySelector('[data-login-btn]');

@@ -27,7 +27,7 @@ export const findNoteIndex = (notebook, noteId) => {
 
 // Initialize the database
 let notekeeperDB = {};
-const API_BASE = 'http://localhost:4000/api/v1';
+const API_BASE = 'https://notetaking-xxgg.onrender.com/api/v1';
 
 // Initialize database from server
 const initDB = async function () {

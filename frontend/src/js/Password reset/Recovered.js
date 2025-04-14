@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE = 'http://localhost:4000/api/v1/auth';  // Corrected to match the backend route
+    const API_BASE = 'https://notetaking-xxgg.onrender.com/api/v1/auth';  // Corrected to match the backend route
 
     const recoveredForm = document.getElementById('recoveredForm');
 
